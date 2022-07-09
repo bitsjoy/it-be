@@ -18,7 +18,7 @@ connectDB();
 app.use(express.json({extended: false}));
 // app.use(json2xls.middleware);
 
-app.use('/api/mineralModel', require('./Api/Mineral').router);
+app.use('/api/mineralModel', require('./api/Mineral').router);
 app.use('/api/auth', require('./auth'));
 
 const Port = process.env.PORT || 3001;
