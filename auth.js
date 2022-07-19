@@ -16,7 +16,7 @@ router.get('/jwt-test', tokenVerification, (req, res) => {
 
 router.post('/login', (req, res) => {
     // #swagger.tags = ['auth']
-    console.log(req.body);
+    // console.log(req.body);
         User.findOne({email: req.body.email})
         .then(user => {
             if(!user) {

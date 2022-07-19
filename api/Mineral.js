@@ -3,6 +3,9 @@ const Mineral = require('../models/Mineral');
 const router = express.Router();
 const tokenVerification = require('../middleware');
 
+require('dotenv').config();
+
+
 router.get('/', tokenVerification, async (req, res) => {
     var allMinerals = [];
     var allMinerals = await Mineral.find();
@@ -12,6 +15,60 @@ router.get('/', tokenVerification, async (req, res) => {
         res.send({content: [], message: 'failure'})
     }   
 })
+
+// FILE UPLOAD and RETREIVE BEGIN
+const AWS = require('aws-sdk');
+const fs = require('fs');
+const path = require('path');
+const upload = require('multer')();
+
+router.post('/uploadImage', tokenVerification, upload.any(), async (req, res) => {
+    AWS.config.update({
+        accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+        secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY
+      });
+    
+    var s3 = new AWS.S3();
+    var filePath = "./assets/pot.pdf";
+
+      fs.writeFile('./assets/pot.pdf', req.files[0].buffer, function (err) {
+        if (err) throw err;               
+        console.log('Results Received');
+      }); 
+      let targetFolderInBucket = "digivist";
+    //configuring parameters
+    var params = {
+      Bucket: 'bitsjoy-template-test',
+      Body : fs.createReadStream(filePath),
+      Key : targetFolderInBucket+"/"+"Date.now(;)"+"_"+path.basename(filePath),  // there is the folder name at the front, (folder in bucket)
+    };
+    
+    s3.upload(params, function (err, data) {
+      //handle error
+      if (err) {
+        console.log("Error", err);
+      }
+    
+      //success
+      if (data) {
+        fs.unlinkSync(filePath);
+        console.log("Uploaded in:", data.Location);
+ 
+            var item = req.body;
+            var params = { Bucket: "bitsjoy-template-test", Key: targetFolderInBucket+"/"+"Date.now(;)"+"_"+path.basename(filePath)}; // keyname can be a filename
+            s3.getObject(params, function (err, data) {
+                if (err) {
+                    return res.send({ "error": err });
+                }
+                res.send({ data });
+            });
+         
+      }
+    })
+
+})
+// FILE UPLOAD and RETREIVE END
+
 
 router.post('/', tokenVerification, (req, res)=>{ 
      Mineral.create(req.body).then((mineral) => {
