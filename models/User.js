@@ -1,6 +1,10 @@
 const mongoose = require('mongoose')
 
 const user = mongoose.Schema({
+    fullName: {
+        type: String,
+        required: true
+    },
     email: {
         type: String,
         required: true
@@ -8,6 +12,22 @@ const user = mongoose.Schema({
     password: {
         type: String,
         required: true
+    },
+    ppImageLink: {
+        type: String,
+    },
+    planType: {
+        type: String   //plan id
+    },
+    active: Boolean,
+    notes: {
+        type: {
+
+        },
+        default : {
+            // "Book Title a" : [{noteId: "a", noteTitle: 'Sample note a', deleted: false}],
+            // "Book Title b" : [{noteId: "b", noteTitle: 'Sample note b', deleted: false}], 
+        }
     }
 });
 

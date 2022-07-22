@@ -1,14 +1,14 @@
 const express = require('express');
 const connectDB = require('./db_connection/Connection');
 // const json2xls = require('json2xls');
-
-require('dotenv').config();
-
+const bodyParser = require("body-parser");
 
 var cors = require('cors')
 var app = express()
 
 app.use(cors())
+
+app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
@@ -21,7 +21,9 @@ connectDB();
 app.use(express.json({extended: false}));
 // app.use(json2xls.middleware);
 
-app.use('/api/checkinEntry', require('./api/ActiveCheckinEntry').router);
+app.use('/api/mineralModel', require('./Api/Mineral').router);
+app.use('/api/user', require('./Api/User').router);
+app.use('/api/notes', require('./Api/Note').router);
 app.use('/api/auth', require('./auth'));
 
 const Port = process.env.PORT || 3001;
