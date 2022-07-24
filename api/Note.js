@@ -19,6 +19,7 @@ router.post('/getNote', tokenVerification, async (req, res) => {
 router.post('/createNote', tokenVerification, async(req, res) => {
     Note.create(req.body).then((note) => {
         User.findOne({_id: req.body.author.id}).then(user => {  
+            if(user.ownedProducts.includes("Notes")){
            
             let j = user.notes[req.body.bookTitle]?user.notes[req.body.bookTitle]:[]; 
             if(j.find(x => x.noteTitle == req.body.title)){
@@ -41,6 +42,9 @@ router.post('/createNote', tokenVerification, async(req, res) => {
             });
         });
     }
+} else {
+    res.status(403).json({message: 'access denied'});
+}
  
         })
     })
