@@ -11,7 +11,7 @@ app.use(cors())
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(function(req, res, next) {
-  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Origin", "*" );
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
   next();
 });
@@ -21,9 +21,9 @@ connectDB();
 app.use(express.json({extended: false}));
 // app.use(json2xls.middleware);
 
-app.use('/api/mineralModel', require('./Api/Mineral').router);
-app.use('/api/user', require('./Api/User').router);
-app.use('/api/notes', require('./Api/Note').router);
+app.use('/api/mineralModel', require('./api/Mineral').router);
+app.use('/api/user', require('./api/User').router);
+app.use('/api/notes', require('./api/Note').router);
 app.use('/api/auth', require('./auth'));
 
 const Port = process.env.PORT || 3001;

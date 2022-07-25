@@ -16,9 +16,8 @@ const user = mongoose.Schema({
     ppImageLink: {
         type: String,
     },
-    ownedProducts: {
-        type: [String],
-        default: []
+    planType: {
+        type: String   //plan id
     },
     active: Boolean,
     notes: {
