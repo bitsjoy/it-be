@@ -93,7 +93,7 @@ router.put('/updateNote', tokenVerification, async(req, res) => {
 
 router.put('/updateNoteAccessibleTo', tokenVerification, async(req, res) => {  
     // req -> list() of newToBeAdded, noteId, authorId
-    
+  
 
     Note.findOne({_id: req.body.noteId}).then(note => {
         if(note.author.id === req.body.authorId){
@@ -101,13 +101,17 @@ router.put('/updateNoteAccessibleTo', tokenVerification, async(req, res) => {
     
         req.body.list.forEach((email, i) => {
             User.findOne({email: email}).then(resu => {
+              if(resu){
                 if(!accessibleToArr.find(x => x == resu._id)) { accessibleToArr.push(resu._id);}
                 Note.findByIdAndUpdate(req.body.noteId, { accessibleTo: accessibleToArr}).then(result => {
                 
                     if(i==req.body.list.length-1){res.status(200).json({message: "success"});
                 }
-              
         }) 
+    } else {
+        res.status(404).json({message: "email not found"});
+
+    }
             })
         }) 
     } else {
