@@ -92,7 +92,7 @@ router.put('/updateNote', tokenVerification, async(req, res) => {
 });
 
 router.put('/updateNoteAccessibleTo', tokenVerification, async(req, res) => {  
-    // req -> list(), noteId, authorId
+    // req -> list() of newToBeAdded, noteId, authorId
     
 
     Note.findOne({_id: req.body.noteId}).then(note => {
@@ -104,7 +104,8 @@ router.put('/updateNoteAccessibleTo', tokenVerification, async(req, res) => {
                 if(!accessibleToArr.find(x => x == resu._id)) { accessibleToArr.push(resu._id);}
                 Note.findByIdAndUpdate(req.body.noteId, { accessibleTo: accessibleToArr}).then(result => {
                 
-                    if(i==req.body.list.length-1){res.send({message: "success"});}
+                    if(i==req.body.list.length-1){res.status(200).json({message: "success"});
+                }
               
         }) 
             })
