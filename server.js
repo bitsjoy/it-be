@@ -9,6 +9,7 @@ var app = express()
 app.use(cors())
 
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.bodyParser({limit: '50mb'}));
 
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*" );
