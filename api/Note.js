@@ -19,8 +19,8 @@ router.post('/getNote', tokenVerification, async (req, res) => {
 router.post('/createNote', tokenVerification, async(req, res) => {
     Note.create(req.body).then((note) => {
         User.findOne({_id: req.body.author.id}).then(user => {  
-            if(user.ownedProducts.includes("Notes")){
-           
+           // if(user.ownedProducts.includes("Notes")){
+            if(true){
             let j = user.notes[req.body.bookTitle]?user.notes[req.body.bookTitle]:[]; 
             if(j.find(x => x.noteTitle == req.body.title)){
                 res.status(400).json({message: 'note title already exists'});   // title exists
