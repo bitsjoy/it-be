@@ -27,6 +27,7 @@ app.use(express.json({extended: false}));
 app.use('/api/mineralModel', require('./api/Mineral').router);
 app.use('/api/user', require('./api/User').router);
 app.use('/api/notes', require('./api/Note').router);
+app.use('/api/dailydiary', require('./api/DailyDiaryEntry').router);
 app.use('/api/auth', require('./auth'));
 
 const Port = process.env.PORT || 3001;
