@@ -29,7 +29,7 @@ router.post('/createDiaryEntry', tokenVerification, async(req, res) => {
                 res.status(500).json({message: "Something went wrong, please try again"});
             })
         } else {
-            DiaryDiaryEntry.findByIdAndUpdate({_id: DDE._id}, {mainContent: req.body.mainContent}).then(DDEU => {
+            DiaryDiaryEntry.findByIdAndUpdate({_id: DDE._id}, {mainContent: req.body.mainContent, mood: req.body.mood}).then(DDEU => {
                 res.status(200).json({message: "Updated successfully"});
             }).catch(err => {
                 res.status(500).json({message: "Something went wrong while updating"});
